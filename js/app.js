@@ -72,3 +72,15 @@ const showAllPhone = () => {
         document.getElementById("lastPart").style.display = "block";
     });
 }
+
+// for show Individual phone details
+const showdetails = async (id) => {
+    try {
+        const url = `https://openapi.programming-hero.com/api/phone/${id}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        document.getElementById("exampleModalLabel").innerText = data.data.name;
+    } catch (error) {
+        console.log(error);
+    }
+}
