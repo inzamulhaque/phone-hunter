@@ -28,3 +28,7 @@ main {
 #spinnerDiv {
     display: none;
 }
+
+#lastPart {
+    display: none;
+}
