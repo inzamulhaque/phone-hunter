@@ -11,6 +11,10 @@ const searchPhone = () => {
     document.getElementById("spinnerDiv").style.display = "block";
     document.getElementById("phoneCards").textContent = "";
     const searchString = document.getElementById("searchInput").value;
+    if (searchString.length === 0) {
+        document.getElementById("spinnerDiv").style.display = "none";
+        alert("Please Enter Your Phone Name");
+    }
     const searchText = searchString.toLowerCase();
     const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`;
     document.getElementById("searchInput").value = "";
@@ -110,6 +114,7 @@ const showdetails = async (id) => {
         const sensorsDiv = document.createElement("div");
         const othersDiv = document.createElement("div");
         othersDiv.innerHTML = "<h3>Others: </h3>";
+        const ul = document.createElement("ul");
         sensorsDiv.innerText = "sensors: ";
         mainFeaturesDiv.innerHTML = `
             <p>storage: ${data.data.mainFeatures.storage}</p>
@@ -130,13 +135,11 @@ const showdetails = async (id) => {
             const others = data.data.others;
             const othersKeys = Object.keys(others);
             othersKeys.forEach(element => {
-                const p = document.createElement("p");
-                p.innerText = `
-                    ${element}: ${others[element]}
-                `;
-                othersDiv.appendChild(p);
+                const li = document.createElement("li");
+                li.innerText = `${element}: ${others[element]}`;
+                ul.appendChild(li);
             });
-
+            othersDiv.appendChild(ul);
             showDetailsDiv.appendChild(othersDiv);
         }
     } catch (error) {
