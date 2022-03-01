@@ -79,7 +79,50 @@ const showdetails = async (id) => {
         const url = `https://openapi.programming-hero.com/api/phone/${id}`;
         const res = await fetch(url);
         const data = await res.json();
-        document.getElementById("exampleModalLabel").innerText = data.data.name;
+
+        // show modal header
+        document.getElementById("modalImg").setAttribute("src", `${data.data.image}`);
+        document.getElementById("exampleModalLabel").innerHTML = `
+            <h3>Name: ${data.data.name}</h3>
+            <p>Release Date: ${data.data.releaseDate ? data.data.releaseDate : "No Release Date Fount"}</p>
+            <p>Brand Name: ${data.data.brand ? data.data.brand : ""}</p>
+        `;
+
+        const sensors = data.data.mainFeatures.sensors;
+
+        const showDetailsDiv = document.getElementById("showDetailsDiv");
+        // for show mainFeatures and others
+        const mainFeaturesDiv = document.createElement("div");
+        const sensorsDiv = document.createElement("div");
+        const othersDiv = document.createElement("div");
+        othersDiv.innerHTML = "<h3>Others: </h3>";
+        sensorsDiv.innerText = "sensors: ";
+        mainFeaturesDiv.innerHTML = `
+            <p>storage: ${data.data.mainFeatures.storage}</p>
+            <p>displaySize: ${data.data.mainFeatures.displaySize}</p>
+            <p>chipSet: ${data.data.mainFeatures.chipSet}</p>
+            <p>memory: ${data.data.mainFeatures.memory}</p>
+        `;
+        sensors.forEach(element => {
+            const span = document.createElement("span");
+            span.innerText = element + ", ";
+            sensorsDiv.appendChild(span);
+        });
+        showDetailsDiv.appendChild(mainFeaturesDiv);
+        showDetailsDiv.appendChild(sensorsDiv);
+
+        if (data.data.others) {
+            const others = data.data.others;
+            const othersKeys = Object.keys(others);
+            othersKeys.forEach(element => {
+                const p = document.createElement("p");
+                p.innerText = `
+                    ${element}: ${others[element]}
+                `;
+                othersDiv.appendChild(p);
+            });
+            showDetailsDiv.appendChild(othersDiv);
+        }
     } catch (error) {
         console.log(error);
     }
