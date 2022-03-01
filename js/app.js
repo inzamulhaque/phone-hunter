@@ -1,3 +1,12 @@
+// click enter button for search
+const checkEnter = event => {
+    console.log(event.keyCode);
+    if (event.keyCode === 13) {
+        searchPhone();
+    }
+}
+
+// search phone
 const searchPhone = () => {
     document.getElementById("spinnerDiv").style.display = "block";
     document.getElementById("phoneCards").textContent = "";
@@ -15,6 +24,7 @@ const displayPhone = (data) => {
     document.getElementById("spinnerDiv").style.display = "none";
     if (data.status === false) {
         document.getElementById("showResultError").style.display = "block";
+        document.getElementById("lastPart").style.display = "none";
     }
 
     // take first 20 phone for show
@@ -80,6 +90,10 @@ const showdetails = async (id) => {
         const res = await fetch(url);
         const data = await res.json();
 
+        // for modal data clear
+        document.getElementById("exampleModalLabel").textContent = "";
+        document.getElementById("showDetailsDiv").textContent = "";
+
         // show modal header
         document.getElementById("modalImg").setAttribute("src", `${data.data.image}`);
         document.getElementById("exampleModalLabel").innerHTML = `
@@ -108,6 +122,7 @@ const showdetails = async (id) => {
             span.innerText = element + ", ";
             sensorsDiv.appendChild(span);
         });
+
         showDetailsDiv.appendChild(mainFeaturesDiv);
         showDetailsDiv.appendChild(sensorsDiv);
 
@@ -121,6 +136,7 @@ const showdetails = async (id) => {
                 `;
                 othersDiv.appendChild(p);
             });
+
             showDetailsDiv.appendChild(othersDiv);
         }
     } catch (error) {
